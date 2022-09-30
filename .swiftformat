@@ -1,0 +1,8 @@
+# format options
+# https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
+--allman false
+--indent 2
+--tabwidth 2
+--emptybraces spaced
+--disable andOperator
+# file options
