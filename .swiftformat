@@ -1,8 +1,17 @@
 # format options
+
 # https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md
+
 --allman false
 --indent 2
 --tabwidth 2
 --emptybraces spaced
 --disable andOperator
+--stripunusedargs closure-only
+
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+
 # file options

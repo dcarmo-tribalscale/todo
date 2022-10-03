@@ -1,0 +1,31 @@
+# Project Spec:
+# https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
+
+name: Database
+
+options:
+  indentWidth: 2
+  tabWidth: 2
+  deploymentTarget:
+    iOS: 14.0
+
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    majorVersion: 9.0.0
+
+targets:
+  Database:
+    type: framework
+    platform: iOS
+    settings:
+      base:
+        # iPhone only
+        TARGETED_DEVICE_FAMILY: 1
+        CODE_SIGNING_ALLOWED: "NO"
+    sources:
+      - .
+    dependencies:
+      - package: Firebase
+        product: FirebaseFirestore
+    scheme:

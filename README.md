@@ -12,6 +12,8 @@ For all tools, libraries, etc. used, please reference their documentation for in
 
 ### [ReSwift](https://github.com/ReSwift/ReSwift)
 
+### [ReSwift-Thunk](https://github.com/ReSwift/ReSwift-Thunk)
+
 ### [SFSafeSymbols](https://github.com/SFSafeSymbols/SFSafeSymbols)
 
 ### [Quick](https://github.com/Quick/Quick)
