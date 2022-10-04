@@ -113,7 +113,7 @@ targets:
         script: |
           export PATH="$PATH:/opt/homebrew/bin"
           if which mint > /dev/null; then
-            mint run realm/SwiftLint@0.49.1 --path "${SRCROOT}/../.swiftlint.yml"
+            mint run realm/SwiftLint@0.49.1 --config "${SRCROOT}/../.swiftlint.yml"
           else
             echo "WARNING: mint or SwiftLint not installed, use `brew install mint` then `mint bootstrap` to install tools"
           fi
@@ -121,7 +121,10 @@ targets:
       - package: ReSwift
       - package: ReSwiftThunk
       - package: SFSafeSymbols
-      - framework: Database.framework
+      - framework: ToDoDatabase.framework
+        embed: false
+        implicit: true
+      - framework: ToDoShared.framework
         embed: false
         implicit: true
 

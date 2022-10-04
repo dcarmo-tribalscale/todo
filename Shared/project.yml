@@ -1,7 +1,7 @@
 # Project Spec:
 # https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
 
-name: ToDoDatabase
+name: ToDoShared
 
 options:
   indentWidth: 2
@@ -9,13 +9,8 @@ options:
   deploymentTarget:
     iOS: 14.0
 
-packages:
-  Firebase:
-    url: https://github.com/firebase/firebase-ios-sdk
-    majorVersion: 9.0.0
-
 targets:
-  ToDoDatabase:
+  ToDoShared:
     type: framework
     platform: iOS
     settings:
@@ -48,9 +43,3 @@ targets:
           else
             echo "WARNING: mint or SwiftLint not installed, use `brew install mint` then `mint bootstrap` to install tools"
           fi
-    dependencies:
-      - package: Firebase
-        product: FirebaseDatabase
-      - framework: ToDoShared.framework
-        embed: false
-        implicit: true

@@ -99,6 +99,7 @@ class ObservableThrottledState<T: Hashable>: ObservableState<T> {
   private let objectThrottled = PassthroughSubject<T, Never>()
 }
 
+// swiftlint:disable:next line_length
 class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableObject, StoreSubscriber, ObservableSubscription {
   @Published public var current: Derived
 
@@ -163,6 +164,7 @@ class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableO
   }
 }
 
+// swiftlint:disable:next line_length
 class ObservableDerivedThrottledState<Original: Hashable, Derived: Hashable>: ObservableDerivedState<Original, Derived> {
   // MARK: Lifecycle
 

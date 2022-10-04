@@ -6,6 +6,7 @@
 //
 
 import ReSwift
+import ToDoShared
 
 struct TodoState {
   var items: [Todo]

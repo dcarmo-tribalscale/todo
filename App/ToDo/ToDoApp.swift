@@ -6,17 +6,25 @@
 //
 
 import SwiftUI
-import TodoDatabase
+import ToDoDatabase
+
+// MARK: - AppDelegate
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+
+  var database: DBEngine!
+
   func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    
-    TodoDatabase.register()
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+
+    database = FirebaseDBEngine()
+    database.setup()
 
     return true
   }
 }
+
+// MARK: - App
 
 @main
 struct ToDoApp: App {

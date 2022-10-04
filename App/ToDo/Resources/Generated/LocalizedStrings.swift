@@ -10,12 +10,32 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum LocalizedStrings {
+  internal enum TodoAdd {
+    internal enum Button {
+      /// Save
+      internal static let save = LocalizedStrings.tr("Localizable", "todo_add.button.save", fallback: "Save")
+    }
+    internal enum Input {
+      /// Description
+      internal static let description = LocalizedStrings.tr("Localizable", "todo_add.input.description", fallback: "Description")
+      /// Title
+      internal static let title = LocalizedStrings.tr("Localizable", "todo_add.input.title", fallback: "Title")
+    }
+    internal enum Nav {
+      /// Title
+      internal static let title = LocalizedStrings.tr("Localizable", "todo_add.nav.title", fallback: "Title")
+    }
+  }
   internal enum TodoList {
-    /// Localizable.strings
-    ///   ToDo
-    /// 
-    ///   Created by TribalScale on 2022-10-03.
-    internal static let title = LocalizedStrings.tr("Localizable", "todo_list.title", fallback: "Todos")
+    /// There's nothing Todo! Use the plus to add a new Todo.
+    internal static let empty = LocalizedStrings.tr("Localizable", "todo_list.empty", fallback: "There's nothing Todo! Use the plus to add a new Todo.")
+    internal enum Nav {
+      /// Localizable.strings
+      ///   ToDo
+      /// 
+      ///   Created by TribalScale on 2022-10-03.
+      internal static let title = LocalizedStrings.tr("Localizable", "todo_list.nav.title", fallback: "Todos")
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

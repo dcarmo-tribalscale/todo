@@ -6,4 +6,9 @@
   
 */
 
-"todo_list.title" = "Todos";
+"todo_list.nav.title" = "Todos";
+"todo_list.empty" = "There's nothing Todo! Use the plus to add a new Todo.";
+"todo_add.nav.title" = "Title";
+"todo_add.input.title" = "Title";
+"todo_add.input.description" = "Description";
+"todo_add.button.save" = "Save";

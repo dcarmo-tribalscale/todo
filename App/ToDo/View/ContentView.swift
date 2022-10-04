@@ -8,6 +8,7 @@
 import SFSafeSymbols
 import SwiftUI
 import ReSwift
+import ToDoShared
 
 struct ContentView: View {
 
@@ -15,22 +16,7 @@ struct ContentView: View {
 
   var body: some View {
     NavigationView {
-      TodoListView()
-        .navigationTitle(LocalizedStrings.TodoList.title)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
-            EditButton()
-          }
-
-          ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-              print("Add Item")
-            } label: {
-              Image(systemSymbol: .plus)
-            }
-          }
-        }
+      TodoListView(viewModel: .init())
     }
   }
 }

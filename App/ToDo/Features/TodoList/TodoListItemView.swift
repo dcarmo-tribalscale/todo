@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import ToDoShared
 
 struct TodoListItemView: View {
 
+  // MARK: - Properties
+
   let todo: Todo
+
+  // MARK: - Body
 
   var body: some View {
     HStack(alignment: .center) {
@@ -17,8 +22,11 @@ struct TodoListItemView: View {
         .resizable()
         .frame(width: 24, height: 24)
         .foregroundColor(.blue)
+        .onTapGesture {
+          print("Complete Task")
+        }
 
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 6) {
         Text(todo.title)
           .font(.subheadline)
           .fontWeight(.bold)
@@ -36,18 +44,23 @@ struct TodoListItemView: View {
   }
 }
 
+// MARK: - Preview
+
 struct TodoListItemView_Previews: PreviewProvider {
     static var previews: some View {
-      TodoListItemView(todo: sampleTodos[0])
-        .previewLayout(.sizeThatFits)
-        .padding()
+        TodoListItemView(todo: todoStandard)
+          .previewDisplayName("Standard")
+          .previewLayout(.sizeThatFits)
+          .padding()
 
-      TodoListItemView(todo: sampleTodos[1])
-        .previewLayout(.sizeThatFits)
-        .padding()
+        TodoListItemView(todo: todoLongDescription)
+          .previewDisplayName("Long Description")
+          .previewLayout(.sizeThatFits)
+          .padding()
 
-      TodoListItemView(todo: sampleTodos[2])
-        .previewLayout(.sizeThatFits)
-        .padding()
+        TodoListItemView(todo: todoLongTitle)
+          .previewDisplayName("Long Title")
+          .previewLayout(.sizeThatFits)
+          .padding()
     }
 }

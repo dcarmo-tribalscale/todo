@@ -8,6 +8,7 @@
 import Foundation
 import ReSwift
 import ReSwiftThunk
+import ToDoShared
 
 enum TodoAction: Action {
   case create(todo: Todo)
@@ -16,6 +17,6 @@ enum TodoAction: Action {
   case save(todos: [Todo])
 }
 
-let fetchTodos = Thunk<AppState> { dispatch, getState in
-  
-}
+// let fetchTodos = Thunk<AppState> { dispatch, getState in
+//  
+// }
