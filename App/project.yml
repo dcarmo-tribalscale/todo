@@ -79,10 +79,13 @@ targets:
       properties:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
+        UILaunchStoryboardName: "Launch Screen.storyboard"
     settings:
       base:
         # iPhone only
         TARGETED_DEVICE_FAMILY: 1
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: HQR253M6PT
         PRODUCT_BUNDLE_IDENTIFIER: com.dcarmo.ToDo
         PRODUCT_NAME: ToDo
         MARKETING_VERSION: 0.0.1
@@ -122,10 +125,8 @@ targets:
       - package: ReSwiftThunk
       - package: SFSafeSymbols
       - framework: ToDoDatabase.framework
-        embed: false
         implicit: true
       - framework: ToDoShared.framework
-        embed: false
         implicit: true
 
   ToDoTests:

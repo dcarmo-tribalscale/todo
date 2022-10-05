@@ -10,6 +10,6 @@ import ToDoShared
 
 public protocol DBEngine: AnyObject {
   func setup()
-  func getTodos() async throws -> Any?
-  func saveTodo(todo: Todo) throws
+  func getTodos() async throws -> [Todo]
+  func saveTodo(todo: Todo) async throws
 }

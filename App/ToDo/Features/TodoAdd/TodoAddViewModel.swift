@@ -15,22 +15,27 @@ class TodoAddViewModel: ObservableObject {
   @Published var title: String = ""
   @Published var description: String = ""
 
-  @Published var error: String = ""
+  @Published var titleError: String = ""
+  @Published var descriptionError: String = ""
 
   // MARK: - Lifecycle
 
   // MARK: - Functions
 
-  func saveTodo() {
+  func saveTodo() -> Bool {
     guard !title.isEmpty else {
-      return
+      titleError = "Title cannot be empty"
+      return false
     }
 
     guard !description.isEmpty else {
-      return
+      descriptionError = "Description cannot be empty"
+      return false
     }
 
-    store.dispatch(TodoAction.create(todo: Todo(id: .init(), title: title, description: description, complete: false)))
+    let newTodo = Todo(title: title, description: description, complete: false)
+    store.dispatch(saveToDatabase(todo: newTodo))
+    return true
   }
 
 }

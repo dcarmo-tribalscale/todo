@@ -16,15 +16,17 @@ struct TodoListView: View {
   let addViewShadowRadius: CGFloat = 2
   let notchPadding: CGFloat = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0)
 
-  @State var isAddingTodo: Bool = false
+  @StateObject var viewModel = TodoListViewModel()
 
-  @ObservedObject var viewModel: TodoListViewModel
+  @StateObject var todos = store.subscribe { $0.todoState.items }
+
+  @State var isAddingTodo: Bool = false
 
   // MARK: - Body
 
   var body: some View {
     ZStack {
-      if viewModel.todos.current.isEmpty {
+      if todos.current.isEmpty {
         Text(LocalizedStrings.TodoList.empty)
           .font(.title3)
           .fontWeight(.semibold)
@@ -32,25 +34,12 @@ struct TodoListView: View {
           .padding()
       } else {
         List {
-          ForEach(viewModel.todos.current) { todo in
+          ForEach(todos.current) { todo in
             TodoListItemView(todo: todo)
           } //: ForEach
           .onDelete(perform: viewModel.deleteTodo)
         } //: List
       }
-
-      VStack {
-        Spacer()
-
-        TodoAddView(isAddingTodo: $isAddingTodo)
-          .frame(height: addViewHeight, alignment: .bottom)
-          .background(
-            RoundedRectangle(cornerRadius: 10)
-              .fill(.white)
-              .shadow(color: .black.opacity(0.2), radius: addViewShadowRadius, x: 0, y: -4)
-          )
-          .offset(y: isAddingTodo ? 0 : (addViewHeight + addViewShadowRadius + notchPadding))
-      } //: VStack
     } //: ZStack
     .navigationTitle(LocalizedStrings.TodoList.Nav.title)
     .navigationBarTitleDisplayMode(.inline)
@@ -61,12 +50,18 @@ struct TodoListView: View {
 
       ToolbarItem(placement: .navigationBarTrailing) {
         Button {
-          withAnimation(.easeOut) {
-            isAddingTodo = true
-          }
+          isAddingTodo = true
         } label: {
           Image(systemSymbol: .plus)
         }
+      }
+    }
+    .sheet(isPresented: $isAddingTodo) {
+      TodoAddView(viewModel: TodoAddViewModel())
+    }
+    .onAppear {
+      if todos.current.isEmpty {
+        store.dispatch(fetchTodos)
       }
     }
   }
@@ -77,12 +72,12 @@ struct TodoListView: View {
 struct TodoListView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      TodoListView(viewModel: TodoListViewModel())
+      TodoListView()
         .previewDisplayName("Empty List")
     }
 
     NavigationView {
-      TodoListView(viewModel: TodoListViewModel())
+      TodoListView()
         .previewDisplayName("Populated List")
         .onAppear {
           for todo in sampleTodos {

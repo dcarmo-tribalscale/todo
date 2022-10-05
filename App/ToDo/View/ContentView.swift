@@ -16,7 +16,7 @@ struct ContentView: View {
 
   var body: some View {
     NavigationView {
-      TodoListView(viewModel: .init())
+      TodoListView()
     }
   }
 }

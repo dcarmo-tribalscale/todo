@@ -11,34 +11,27 @@ struct TodoAddView: View {
 
   // MARK: - Properties
 
-  @ObservedObject private var viewModel = TodoAddViewModel()
+  @Environment(\.presentationMode) private var presentationMode
 
-  @Binding var isAddingTodo: Bool
+  @ObservedObject var viewModel: TodoAddViewModel
 
   // MARK: - Body
 
   var body: some View {
     VStack(alignment: .leading, spacing: 14) {
+      InputFieldView(title: LocalizedStrings.TodoAdd.Input.title,
+                     placeholder: LocalizedStrings.TodoAdd.Input.title,
+                     error: $viewModel.titleError,
+                     value: $viewModel.title)
 
-      Spacer()
-
-      TextField(LocalizedStrings.TodoAdd.Input.title, text: $viewModel.title)
-        .padding()
-        .background(Color(UIColor.tertiarySystemFill))
-        .cornerRadius(9)
-        .font(.system(size: 24, weight: .bold, design: .default))
-
-      TextField(LocalizedStrings.TodoAdd.Input.description, text: $viewModel.description)
-        .padding()
-        .background(Color(UIColor.tertiarySystemFill))
-        .cornerRadius(9)
-        .font(.system(size: 24, weight: .bold, design: .default))
+      InputFieldView(title: LocalizedStrings.TodoAdd.Input.description,
+                     placeholder: LocalizedStrings.TodoAdd.Input.description,
+                     error: $viewModel.descriptionError,
+                     value: $viewModel.description)
 
       Button {
-        viewModel.saveTodo()
-
-        withAnimation(.easeIn) {
-          isAddingTodo = false
+        if viewModel.saveTodo() {
+          presentationMode.wrappedValue.dismiss()
         }
       } label: {
         Text(LocalizedStrings.TodoAdd.Button.save)
@@ -63,6 +56,6 @@ struct TodoAddView: View {
 
 struct TodoAddView_Previews: PreviewProvider {
   static var previews: some View {
-    TodoAddView(isAddingTodo: .constant(true))
+    TodoAddView(viewModel: TodoAddViewModel())
   }
 }

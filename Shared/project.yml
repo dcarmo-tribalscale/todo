@@ -18,10 +18,15 @@ targets:
         # iPhone only
         TARGETED_DEVICE_FAMILY: 1
         # Fix issue with framework requiring signing. Likely need to find a better fix for this.
-        CODE_SIGNING_ALLOWED: "NO"
+        # CODE_SIGNING_ALLOWED: "NO"
+        # CODE_SIGN_STYLE: Manual
+        # DEVELOPMENT_TEAM: HQR253M6PT
+        # CODE_SIGN_IDENTITY: "Apple Developer"
+        PRODUCT_BUNDLE_IDENTIFIER: com.dcarmo.ToDo.Shared
         # Versioning
         MARKETING_VERSION: 0.0.1
         CURRENT_PROJECT_VERSION: 1
+        GENERATE_INFOPLIST_FILE: "YES"
     sources:
       - Framework
     preBuildScripts:
