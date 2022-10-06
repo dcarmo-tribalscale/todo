@@ -22,9 +22,26 @@ enum TodoAction: Action {
   /// Save a bulk amount of Todos
   case save(todos: [Todo])
 
+  /// Toggle todo completed state
+  case toggleCompleted(todo: Todo)
+
   /// Update the state of a single Todo being sync'd to the server
   case updateSyncState(todo: Todo, syncState: SyncState)
 
   /// Remove the sync state from the todo
   case removeSyncState(todo: Todo)
+}
+
+extension TodoAction: TimestampedAction {
+  func timestampUpdatedAction() -> TodoAction {
+    switch self {
+    case let .update(todo):
+      var updatedTodo = todo
+      updatedTodo.updatedAt = Date().timeIntervalSince1970
+      return .update(todo: updatedTodo)
+
+    default:
+      return self
+    }
+  }
 }

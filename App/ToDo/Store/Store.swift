@@ -7,4 +7,12 @@
 
 import ReSwift
 
-var store = Store(reducer: appReducer, state: nil, middleware: [thunkMiddleware])
+// Middleware operates in a FIFO order before calling reducer
+// and then in LIFO order after calling reducer
+let middlewares = [
+  timestampedMiddleware,
+  loggerMiddleware,
+  thunkMiddleware
+]
+
+var store = Store(reducer: appReducer, state: nil, middleware: middlewares)

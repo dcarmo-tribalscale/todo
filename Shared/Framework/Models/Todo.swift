@@ -7,8 +7,71 @@
 
 import Foundation
 
-#if DEBUG
+// MARK: - Todo Struct
 
+public struct Todo {
+
+  // MARK: - Properties
+
+  public let id: String
+  public let title: String
+  public let description: String
+  public let complete: Bool
+
+  // MARK: - Timestamped Properties
+
+  public var createdAt: TimeInterval
+  public var updatedAt: TimeInterval
+
+  // MARK: - Lifecycle
+
+  public init(id: String = UUID.init().uuidString,
+              title: String,
+              description: String,
+              complete: Bool,
+              createdAt: TimeInterval = Date().timeIntervalSince1970,
+              updatedAt: TimeInterval = Date().timeIntervalSince1970) {
+
+    self.id = id
+    self.title = title
+    self.description = description
+    self.complete = complete
+    self.createdAt = createdAt
+    self.updatedAt = updatedAt
+  }
+}
+
+// MARK: - Timestamped
+
+extension Todo: Timestamped { }
+
+// MARK: - Identifiable
+
+extension Todo: Identifiable { }
+
+// MARK: - Codable
+
+extension Todo: Codable { }
+
+// MARK: - Equatable
+
+extension Todo: Equatable {
+  public static func == (_ lhs: Todo, _ rhs: Todo) -> Bool {
+    lhs.id == rhs.id
+  }
+}
+
+// MARK: - Hashable
+
+extension Todo: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+}
+
+// MARK: - Sample Data
+
+#if DEBUG
 public let todoStandard = Todo(
   title: "ToDo 1",
   description: "This is a description for ToDo 1",
@@ -34,41 +97,3 @@ public let sampleTodos = [
   todoLongTitle
 ]
 #endif
-
-public struct Todo {
-  public let id: String
-  public let title: String
-  public let description: String
-  public let complete: Bool
-  public let createdAt: TimeInterval
-
-  public var createdAtDate: Date {
-    Date(timeIntervalSince1970: createdAt)
-  }
-
-  public init(id: String = UUID.init().uuidString,
-              title: String,
-              description: String,
-              complete: Bool,
-              createdAt: TimeInterval = Date().timeIntervalSince1970) {
-
-    self.id = id
-    self.title = title
-    self.description = description
-    self.complete = complete
-    self.createdAt = createdAt
-  }
-}
-
-extension Todo: Identifiable { }
-extension Todo: Codable { }
-
-extension Todo: Equatable {
-  public static func == (_ lhs: Todo, _ rhs: Todo) -> Bool { lhs.id == rhs.id }
-}
-
-extension Todo: Hashable {
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-}

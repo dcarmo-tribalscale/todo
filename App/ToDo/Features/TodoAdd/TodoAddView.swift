@@ -29,7 +29,7 @@ struct TodoAddView: View {
                      error: $viewModel.descriptionError,
                      value: $viewModel.description)
 
-      HStack {
+      VStack {
         Button {
           if viewModel.saveTodo() {
             presentationMode.wrappedValue.dismiss()
@@ -46,6 +46,7 @@ struct TodoAddView: View {
             .foregroundColor(.white)
         }
 
+        #if DEBUG
         Button {
           if viewModel.saveTodo(delay: 4) {
             presentationMode.wrappedValue.dismiss()
@@ -61,6 +62,7 @@ struct TodoAddView: View {
             )
             .foregroundColor(.white)
         }
+        #endif
       }
 
       Spacer()

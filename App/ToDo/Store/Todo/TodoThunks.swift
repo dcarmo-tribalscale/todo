@@ -59,6 +59,7 @@ func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> 
       do {
         // sync the todo to Firebase
         try await dbEngine.delete(todo: todo)
+        dispatch(TodoAction.delete(id: todo.id))
       } catch {
         print(error)
         // Error occured, notify
