@@ -23,7 +23,7 @@ enum TodoAction: Action {
   case save(todos: [Todo])
 
   /// Update the todo complete state
-  case updateComplete(id: Todo.ID, complete: Bool)
+  case updateComplete(todo: Todo)
 
   /// Update the state of a single Todo being sync'd to the server
   case updateSyncState(id: Todo.ID, syncState: SyncState)
@@ -39,6 +39,11 @@ extension TodoAction: TimestampedAction {
       var updatedTodo = todo
       updatedTodo.updatedAt = Date().timeIntervalSince1970
       return .update(todo: updatedTodo)
+
+    case let .updateComplete(todo):
+      var updatedTodo = todo
+      updatedTodo.updatedAt = Date().timeIntervalSince1970
+      return .updateComplete(todo: updatedTodo)
 
     default:
       return self

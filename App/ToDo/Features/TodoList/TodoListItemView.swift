@@ -25,7 +25,7 @@ struct TodoListItemView: View {
         .foregroundColor(.blue)
         .disabled(syncState != nil)
         .onTapGesture {
-          store.dispatch(toggleCompleted(todo: todo))
+          store.dispatch(toggleComplete(on: todo))
         }
 
       VStack(alignment: .leading, spacing: 6) {

@@ -13,5 +13,5 @@ public protocol DBEngine: AnyObject {
   func getTodos() async throws -> [Todo]
   func save(todo: Todo) async throws
   func delete(todo: Todo) async throws
-  func updateCompleted(todoId: Todo.ID, complete: Bool) async throws
+  func updateComplete(on todo: Todo) async throws
 }

@@ -58,13 +58,16 @@ func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> 
   }
 }
 
-func toggleCompleted(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+func toggleComplete(on todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
       await syncStateManagedCall(dispatch: dispatch, todoId: todo.id) {
+        var updatedTodo = todo
+        updatedTodo.complete = !updatedTodo.complete
+
         // sync the todo to Firebase
-        try await dbEngine.updateCompleted(todoId: todo.id, complete: !todo.complete)
-        dispatch(TodoAction.updateComplete(id: todo.id, complete: !todo.complete))
+        try await dbEngine.updateComplete(on: updatedTodo)
+        dispatch(TodoAction.updateComplete(todo: updatedTodo))
       }
     }
   }

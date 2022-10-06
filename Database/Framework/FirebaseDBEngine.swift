@@ -50,10 +50,13 @@ public final class FirebaseDBEngine: DBEngine {
       .removeValue()
   }
 
-  public func updateCompleted(todoId: Todo.ID, complete: Bool) async throws {
+  public func updateComplete(on todo: Todo) async throws {
     try await databaseRef
       .child(todoTableName)
-      .child(todoId)
-      .updateChildValues(["complete": complete])
+      .child(todo.id)
+      .updateChildValues([
+        "complete": todo.complete,
+        "updatedAt": todo.updatedAt
+      ])
   }
 }
