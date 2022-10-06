@@ -39,7 +39,7 @@ struct SyncStateView: View {
       }
     } //: ZStack
     .transition(.opacity)
-    .animation(.easeIn(duration: 0.66), value: state)
+    .animation(.easeIn(duration: 0.33), value: state)
   }
 }
 

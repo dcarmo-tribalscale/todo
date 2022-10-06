@@ -38,7 +38,7 @@ struct TodoListView: View {
       } else {
         List {
           ForEach(todos.current) { todo in
-            TodoListItemView(todo: todo, syncState: todosSyncState.current[todo])
+            TodoListItemView(todo: todo, syncState: todosSyncState.current[todo.id])
           } //: ForEach
           .onDelete(perform: viewModel.deleteTodo)
         } //: List

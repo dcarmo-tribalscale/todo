@@ -22,14 +22,14 @@ enum TodoAction: Action {
   /// Save a bulk amount of Todos
   case save(todos: [Todo])
 
-  /// Toggle todo completed state
-  case toggleCompleted(todo: Todo)
+  /// Update the todo complete state
+  case updateComplete(id: Todo.ID, complete: Bool)
 
   /// Update the state of a single Todo being sync'd to the server
-  case updateSyncState(todo: Todo, syncState: SyncState)
+  case updateSyncState(id: Todo.ID, syncState: SyncState)
 
   /// Remove the sync state from the todo
-  case removeSyncState(todo: Todo)
+  case removeSyncState(id: Todo.ID)
 }
 
 extension TodoAction: TimestampedAction {

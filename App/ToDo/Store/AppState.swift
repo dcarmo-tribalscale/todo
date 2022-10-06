@@ -7,6 +7,20 @@
 
 import ReSwift
 
+// MARK: - State
+
 struct AppState {
   let todoState: TodoState
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension AppState: CustomDebugStringConvertible {
+  var debugDescription: String {
+    return """
+State: {
+  todoState: \(todoState.debugDescription)
+}
+"""
+  }
 }

@@ -16,7 +16,7 @@ public struct Todo {
   public let id: String
   public let title: String
   public let description: String
-  public let complete: Bool
+  public var complete: Bool
 
   // MARK: - Timestamped Properties
 
@@ -41,6 +41,23 @@ public struct Todo {
   }
 }
 
+// MARK: - CustomDebugStringConvertible
+
+extension Todo: CustomDebugStringConvertible {
+  public var debugDescription: String {
+"""
+Todo: {
+  id: \(id)
+  title: \(title)
+  description: \(description)
+  complete: \(complete ? "YES" : "NO")
+  createdAt: \(createdAt)
+  updatedAt: \(updatedAt)
+}
+"""
+  }
+}
+
 // MARK: - Timestamped
 
 extension Todo: Timestamped { }
@@ -57,7 +74,10 @@ extension Todo: Codable { }
 
 extension Todo: Equatable {
   public static func == (_ lhs: Todo, _ rhs: Todo) -> Bool {
-    lhs.id == rhs.id
+    return lhs.id == rhs.id
+    && lhs.title == rhs.title
+    && lhs.description == rhs.description
+    && lhs.complete == rhs.complete
   }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ReSwift
 import ReSwiftThunk
 import ToDoDatabase
 import ToDoShared
@@ -25,29 +26,19 @@ func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
 
 func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: CGFloat = 0) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
-    // Create the todo locally
-    dispatch(TodoAction.create(todo: todo))
-    // Set the state of the todo to syncing
-    dispatch(TodoAction.updateSyncState(todo: todo, syncState: .syncing))
+    Task.detached {
+      // Create the todo locally
+      dispatch(TodoAction.create(todo: todo))
 
-    // Testing with delay to see spinner on screen
-    DispatchQueue.global().asyncAfter(deadline: .now() + testingDelay) {
-      Task.detached {
-        do {
-          // sync the todo to Firebase
-          try await dbEngine.save(todo: todo)
-
-          // Update the sync state to complete
-          dispatch(TodoAction.updateSyncState(todo: todo, syncState: .complete))
-
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            dispatch(TodoAction.removeSyncState(todo: todo))
+      await syncStateManagedCall(dispatch: dispatch, todoId: todo.id) {
+        // Testing with delay to see spinner on screen
+        DispatchQueue.global().asyncAfter(deadline: .now() + testingDelay) {
+          Task.detached {
+            // sync the todo to Firebase
+            try await dbEngine.save(todo: todo)
           }
-        } catch {
-          print(error)
-          // Error occured, notify
-          dispatch(TodoAction.updateSyncState(todo: todo, syncState: .failed))
         }
+
       }
     }
   }
@@ -62,9 +53,40 @@ func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> 
         dispatch(TodoAction.delete(id: todo.id))
       } catch {
         print(error)
-        // Error occured, notify
-        dispatch(TodoAction.updateSyncState(todo: todo, syncState: .failed))
       }
     }
+  }
+}
+
+func toggleCompleted(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+  return Thunk<AppState> { dispatch, _ in
+    Task.detached {
+      await syncStateManagedCall(dispatch: dispatch, todoId: todo.id) {
+        // sync the todo to Firebase
+        try await dbEngine.updateCompleted(todoId: todo.id, complete: !todo.complete)
+        dispatch(TodoAction.updateComplete(id: todo.id, complete: !todo.complete))
+      }
+    }
+  }
+}
+
+private func syncStateManagedCall(dispatch: @escaping DispatchFunction, todoId: Todo.ID, body: () async throws -> Void) async {
+  do {
+    // Set the state of the todo to syncing
+    dispatch(TodoAction.updateSyncState(id: todoId, syncState: .syncing))
+
+    // sync the todo to Firebase
+    try await body()
+
+    // Set the state of the todo to syncing
+    dispatch(TodoAction.updateSyncState(id: todoId, syncState: .complete))
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+      dispatch(TodoAction.removeSyncState(id: todoId))
+    }
+  } catch {
+    print(error)
+    // Set the state of the todo to syncing
+    dispatch(TodoAction.updateSyncState(id: todoId, syncState: .failed))
   }
 }

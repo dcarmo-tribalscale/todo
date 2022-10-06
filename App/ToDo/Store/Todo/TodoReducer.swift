@@ -23,10 +23,16 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
     if let index = state.items.firstIndex(of: todo) {
       state.items[index] = todo
     }
-  case let .updateSyncState(todo, syncState):
-    state.itemsSyncState[todo] = syncState
-  case let .removeSyncState(todo):
-    state.itemsSyncState.removeValue(forKey: todo)
+  case let .updateComplete(id, complete):
+    if let todoIndex = state.items.firstIndex(where: { $0.id == id }) {
+      var item = state.items[todoIndex]
+      item.complete = complete
+      state.items[todoIndex] = item
+    }
+  case let .updateSyncState(id, syncState):
+    state.itemsSyncState[id] = syncState
+  case let .removeSyncState(id):
+    state.itemsSyncState.removeValue(forKey: id)
   }
   return state
 }

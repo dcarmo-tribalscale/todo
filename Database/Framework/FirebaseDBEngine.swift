@@ -13,6 +13,8 @@ import ToDoShared
 
 public final class FirebaseDBEngine: DBEngine {
 
+  private let todoTableName = "todos"
+
   private lazy var databaseRef: DatabaseReference = {
     Database.database().reference()
   }()
@@ -24,7 +26,7 @@ public final class FirebaseDBEngine: DBEngine {
   }
 
   public func getTodos() async throws -> [Todo] {
-    let snapshot = try await databaseRef.child("todos").getData()
+    let snapshot = try await databaseRef.child(todoTableName).getData()
     guard let children = snapshot.children.allObjects as? [DataSnapshot] else {
       return []
     }
@@ -36,15 +38,22 @@ public final class FirebaseDBEngine: DBEngine {
 
   public func save(todo: Todo) async throws {
     try databaseRef
-      .child("todos")
+      .child(todoTableName)
       .child(todo.id)
       .setValue(from: todo)
   }
 
   public func delete(todo: Todo) async throws {
     try await databaseRef
-      .child("todos")
+      .child(todoTableName)
       .child(todo.id)
       .removeValue()
+  }
+
+  public func updateCompleted(todoId: Todo.ID, complete: Bool) async throws {
+    try await databaseRef
+      .child(todoTableName)
+      .child(todoId)
+      .updateChildValues(["complete": complete])
   }
 }

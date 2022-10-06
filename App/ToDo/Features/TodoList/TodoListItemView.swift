@@ -23,8 +23,9 @@ struct TodoListItemView: View {
         .resizable()
         .frame(width: 24, height: 24)
         .foregroundColor(.blue)
+        .disabled(syncState != nil)
         .onTapGesture {
-          print("Complete Task")
+          store.dispatch(toggleCompleted(todo: todo))
         }
 
       VStack(alignment: .leading, spacing: 6) {
