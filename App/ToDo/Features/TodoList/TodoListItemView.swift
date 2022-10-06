@@ -23,6 +23,8 @@ struct TodoListItemView: View {
         .resizable()
         .frame(width: 24, height: 24)
         .foregroundColor(.blue)
+        .transition(.scale)
+        .animation(.easeOut, value: todo.complete)
         .disabled(syncState != nil)
         .onTapGesture {
           store.dispatch(toggleComplete(on: todo))
