@@ -11,5 +11,6 @@ import ToDoShared
 public protocol DBEngine: AnyObject {
   func setup()
   func getTodos() async throws -> [Todo]
-  func saveTodo(todo: Todo) async throws
+  func save(todo: Todo) async throws
+  func delete(todo: Todo) async throws
 }

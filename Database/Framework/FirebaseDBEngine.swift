@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseCore
 import FirebaseDatabase
+import FirebaseDatabaseSwift
 import ToDoShared
 
 public final class FirebaseDBEngine: DBEngine {
@@ -24,40 +25,26 @@ public final class FirebaseDBEngine: DBEngine {
 
   public func getTodos() async throws -> [Todo] {
     let snapshot = try await databaseRef.child("todos").getData()
-    if let snapshotValue = snapshot.value as? [String: [String: Any]] {
-      return try convert(snapshotValue: snapshotValue, to: [Todo].self)
-    }
-    return []
-  }
-
-  public func saveTodo(todo: Todo) async throws {
-    let data = try JSONEncoder().encode(todo)
-    let json = try JSONSerialization.jsonObject(with: data)
-    try await databaseRef.child("todos").child(todo.id).setValue(json)
-  }
-
-  /**
-   Convert an array of elements from firebase to their codable object type.
-
-   NOTE: This only works for flat objects. It cannot convert objects within objects that are keyed in firebase.
-   */
-  // swiftlint:disable:next line_length
-  private func convert<T>(snapshotValue: [String: [String: Any]], to toType: T.Type) throws -> T where T: Sequence, T: Decodable, T.Element: Decodable, T.Element: Identifiable, T.Element.ID == String {
-    var flattenedObjects = [[String: Any]]()
-    snapshotValue.keys.forEach { key in
-      var object = snapshotValue[key]!
-      object["id"] = key
-      flattenedObjects.append(object)
+    guard let children = snapshot.children.allObjects as? [DataSnapshot] else {
+      return []
     }
 
-    let data = try JSONSerialization.data(withJSONObject: flattenedObjects)
-    return try JSONDecoder().decode(toType, from: data)
+    return try children.map { childSnapshot in
+      try childSnapshot.data(as: Todo.self)
+    }
   }
 
-  // swiftlint:disable:next line_length
-  private func convert<T>(snapshotValue: [String: Any], to toType: T.Type) throws -> T where T: Codable, T: Identifiable, T.ID == String {
-    let data = Data()
-    return try JSONDecoder().decode(toType, from: data)
+  public func save(todo: Todo) async throws {
+    try databaseRef
+      .child("todos")
+      .child(todo.id)
+      .setValue(from: todo)
   }
 
+  public func delete(todo: Todo) async throws {
+    try await databaseRef
+      .child("todos")
+      .child(todo.id)
+      .removeValue()
+  }
 }

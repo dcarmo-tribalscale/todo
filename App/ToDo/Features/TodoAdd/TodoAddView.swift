@@ -29,12 +29,13 @@ struct TodoAddView: View {
                      error: $viewModel.descriptionError,
                      value: $viewModel.description)
 
-      Button {
-        if viewModel.saveTodo() {
-          presentationMode.wrappedValue.dismiss()
-        }
-      } label: {
-        Text(LocalizedStrings.TodoAdd.Button.save)
+      HStack {
+        Button {
+          if viewModel.saveTodo() {
+            presentationMode.wrappedValue.dismiss()
+          }
+        } label: {
+          Text(LocalizedStrings.TodoAdd.Button.save)
             .font(.system(size: 24, weight: .bold, design: .default))
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity)
@@ -43,6 +44,23 @@ struct TodoAddView: View {
                 .fill(.blue)
             )
             .foregroundColor(.white)
+        }
+
+        Button {
+          if viewModel.saveTodo(delay: 4) {
+            presentationMode.wrappedValue.dismiss()
+          }
+        } label: {
+          Text("Save Delayed")
+            .font(.system(size: 24, weight: .bold, design: .default))
+            .padding()
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .background(
+              RoundedRectangle(cornerRadius: 9)
+                .fill(.blue)
+            )
+            .foregroundColor(.white)
+        }
       }
 
       Spacer()

@@ -22,7 +22,7 @@ class TodoAddViewModel: ObservableObject {
 
   // MARK: - Functions
 
-  func saveTodo() -> Bool {
+  func saveTodo(delay: CGFloat = 0) -> Bool {
     guard !title.isEmpty else {
       titleError = "Title cannot be empty"
       return false
@@ -34,7 +34,7 @@ class TodoAddViewModel: ObservableObject {
     }
 
     let newTodo = Todo(title: title, description: description, complete: false)
-    store.dispatch(saveToDatabase(todo: newTodo))
+    store.dispatch(saveToDatabase(todo: newTodo, testingDelay: delay))
     return true
   }
 

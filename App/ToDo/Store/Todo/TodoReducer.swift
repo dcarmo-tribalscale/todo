@@ -8,7 +8,7 @@
 import ReSwift
 
 func todoReducer(action: Action, state: TodoState?) -> TodoState {
-  var state = state ?? TodoState(items: [])
+  var state = state ?? TodoState(items: [], itemsSyncState: [:])
 
   guard let todoAction = action as? TodoAction else { return state }
 
@@ -23,6 +23,10 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
     if let index = state.items.firstIndex(of: todo) {
       state.items[index] = todo
     }
+  case let .updateSyncState(todo, syncState):
+    state.itemsSyncState[todo] = syncState
+  case let .removeSyncState(todo):
+    state.itemsSyncState.removeValue(forKey: todo)
   }
   return state
 }

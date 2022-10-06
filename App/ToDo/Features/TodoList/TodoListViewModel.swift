@@ -12,14 +12,14 @@ class TodoListViewModel: ObservableObject {
 
   // MARK: - Properties
 
-  @Published var isAddingTodo: Bool = false
+//  @Published var isAddingTodo: Bool = false
 
 //  var todos = store.subscribe {
 //    print("**** State change:\n\($0.todoState)")
 //    return $0.todoState.items
 //  }
 
-  private var cancellables = Set<AnyCancellable>()
+//  private var cancellables = Set<AnyCancellable>()
 
   // MARK: - Lifecycle
 
@@ -37,11 +37,11 @@ class TodoListViewModel: ObservableObject {
   func deleteTodo(at offsets: IndexSet) {
     for index in offsets {
       let deleteTodo = store.state.todoState.items[index]
-      store.dispatch(TodoAction.delete(id: deleteTodo.id))
+      store.dispatch(deleteFromDatabase(todo: deleteTodo))
     }
   }
 
-  func openAddTodo() {
-    isAddingTodo = true
-  }
+//  func openAddTodo() {
+//    isAddingTodo = true
+//  }
 }

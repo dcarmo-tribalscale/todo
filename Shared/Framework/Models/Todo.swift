@@ -40,12 +40,23 @@ public struct Todo {
   public let title: String
   public let description: String
   public let complete: Bool
+  public let createdAt: TimeInterval
 
-  public init(id: String = UUID.init().uuidString, title: String, description: String, complete: Bool) {
+  public var createdAtDate: Date {
+    Date(timeIntervalSince1970: createdAt)
+  }
+
+  public init(id: String = UUID.init().uuidString,
+              title: String,
+              description: String,
+              complete: Bool,
+              createdAt: TimeInterval = Date().timeIntervalSince1970) {
+
     self.id = id
     self.title = title
     self.description = description
     self.complete = complete
+    self.createdAt = createdAt
   }
 }
 

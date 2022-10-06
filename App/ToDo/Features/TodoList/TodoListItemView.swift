@@ -13,6 +13,7 @@ struct TodoListItemView: View {
   // MARK: - Properties
 
   let todo: Todo
+  let syncState: SyncState?
 
   // MARK: - Body
 
@@ -40,6 +41,8 @@ struct TodoListItemView: View {
       }
 
       Spacer()
+
+      SyncStateView(state: syncState)
     }
   }
 }
@@ -48,19 +51,21 @@ struct TodoListItemView: View {
 
 struct TodoListItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoListItemView(todo: todoStandard)
+      Group {
+        TodoListItemView(todo: todoStandard, syncState: nil)
           .previewDisplayName("Standard")
           .previewLayout(.sizeThatFits)
           .padding()
 
-        TodoListItemView(todo: todoLongDescription)
+        TodoListItemView(todo: todoLongDescription, syncState: nil)
           .previewDisplayName("Long Description")
           .previewLayout(.sizeThatFits)
           .padding()
 
-        TodoListItemView(todo: todoLongTitle)
+        TodoListItemView(todo: todoLongTitle, syncState: nil)
           .previewDisplayName("Long Title")
           .previewLayout(.sizeThatFits)
           .padding()
+      }
     }
 }

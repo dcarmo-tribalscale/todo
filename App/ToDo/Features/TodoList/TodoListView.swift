@@ -19,8 +19,11 @@ struct TodoListView: View {
   @StateObject var viewModel = TodoListViewModel()
 
   @StateObject var todos = store.subscribe { $0.todoState.items }
+  @StateObject var todosSyncState = store.subscribe { $0.todoState.itemsSyncState }
 
   @State var isAddingTodo: Bool = false
+
+  // MARK: - Functions
 
   // MARK: - Body
 
@@ -35,7 +38,7 @@ struct TodoListView: View {
       } else {
         List {
           ForEach(todos.current) { todo in
-            TodoListItemView(todo: todo)
+            TodoListItemView(todo: todo, syncState: todosSyncState.current[todo])
           } //: ForEach
           .onDelete(perform: viewModel.deleteTodo)
         } //: List
@@ -61,7 +64,7 @@ struct TodoListView: View {
     }
     .onAppear {
       if todos.current.isEmpty {
-        store.dispatch(fetchTodos)
+        store.dispatch(fetchTodos())
       }
     }
   }

@@ -10,30 +10,59 @@ import ReSwiftThunk
 import ToDoDatabase
 import ToDoShared
 
-let fetchTodos = Thunk<AppState> { dispatch, _ in
-  Task.detached {
-    let firebaseDBEngine = FirebaseDBEngine()
-
-    do {
-      if let todos = try await firebaseDBEngine.getTodos() as? [Todo] {
+func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+  return Thunk<AppState> { dispatch, _ in
+    Task.detached {
+      do {
+        let todos = try await dbEngine.getTodos()
         dispatch(TodoAction.save(todos: todos))
+      } catch {
+        print(error)
       }
-    } catch {
-      print(error)
     }
   }
 }
 
-func saveToDatabase(todo: Todo) -> Thunk<AppState> {
+func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: CGFloat = 0) -> Thunk<AppState> {
+  return Thunk<AppState> { dispatch, _ in
+    // Create the todo locally
+    dispatch(TodoAction.create(todo: todo))
+    // Set the state of the todo to syncing
+    dispatch(TodoAction.updateSyncState(todo: todo, syncState: .syncing))
+
+    // Testing with delay to see spinner on screen
+    DispatchQueue.global().asyncAfter(deadline: .now() + testingDelay) {
+      Task.detached {
+        do {
+          // sync the todo to Firebase
+          try await dbEngine.save(todo: todo)
+
+          // Update the sync state to complete
+          dispatch(TodoAction.updateSyncState(todo: todo, syncState: .complete))
+
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            dispatch(TodoAction.removeSyncState(todo: todo))
+          }
+        } catch {
+          print(error)
+          // Error occured, notify
+          dispatch(TodoAction.updateSyncState(todo: todo, syncState: .failed))
+        }
+      }
+    }
+  }
+}
+
+func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
-      let firebaseDBEngine = FirebaseDBEngine()
-
       do {
-        try await firebaseDBEngine.saveTodo(todo: todo)
-        dispatch(TodoAction.create(todo: todo))
+        // sync the todo to Firebase
+        try await dbEngine.delete(todo: todo)
       } catch {
         print(error)
+        // Error occured, notify
+        dispatch(TodoAction.updateSyncState(todo: todo, syncState: .failed))
       }
     }
   }

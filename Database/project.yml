@@ -56,5 +56,7 @@ targets:
     dependencies:
       - package: Firebase
         product: FirebaseDatabase
+      - package: Firebase
+        product: FirebaseDatabaseSwift
       - framework: ToDoShared.framework
         implicit: true

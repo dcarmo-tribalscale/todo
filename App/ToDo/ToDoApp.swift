@@ -8,22 +8,6 @@
 import SwiftUI
 import ToDoDatabase
 
-// MARK: - AppDelegate
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-
-  var database: DBEngine!
-
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-
-    database = FirebaseDBEngine()
-    database.setup()
-
-    return true
-  }
-}
-
 // MARK: - App
 
 @main
@@ -31,7 +15,12 @@ struct ToDoApp: App {
 
   // MARK: - Properties
 
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+  // MARK: - Lifecycle
+
+  init() {
+    let database = FirebaseDBEngine()
+    database.setup()
+  }
 
   // MARK: - Body
 
