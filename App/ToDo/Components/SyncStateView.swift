@@ -34,6 +34,14 @@ struct SyncStateView: View {
           .resizable()
           .frame(width: itemSize, height: itemSize)
           .foregroundColor(.green)
+      case let .retry(block):
+        Image(systemSymbol: .exclamationmarkArrowCirclepath)
+          .resizable()
+          .frame(width: itemSize, height: itemSize)
+          .foregroundColor(.yellow)
+          .onTapGesture {
+            block()
+          }
       default:
         EmptyView()
       }
@@ -55,6 +63,11 @@ struct SyncStateView_Previews: PreviewProvider {
 
       SyncStateView(state: .failed)
         .previewDisplayName("Failed")
+        .previewLayout(.sizeThatFits)
+        .padding()
+
+      SyncStateView(state: .retry(block: { }))
+        .previewDisplayName("Retry")
         .previewLayout(.sizeThatFits)
         .padding()
 

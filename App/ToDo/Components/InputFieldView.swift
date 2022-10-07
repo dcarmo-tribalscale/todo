@@ -29,7 +29,7 @@ struct InputFieldView: View {
           .foregroundColor(.red)
           .multilineTextAlignment(.leading)
           .padding(.vertical, 4)
-          .animation(.linear, value: error)
+          .transition(.opacity)
       }
 
       TextField(placeholder, text: $value)
@@ -37,7 +37,9 @@ struct InputFieldView: View {
         .background(Color(UIColor.tertiarySystemFill))
         .cornerRadius(9)
         .font(.system(size: 18, weight: .bold, design: .default))
+        .transition(.slide)
     } //: VStack
+    .animation(.easeOut(duration: 0.33), value: error)
   }
 }
 

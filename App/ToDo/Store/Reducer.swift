@@ -9,6 +9,6 @@ import ReSwift
 
 func appReducer(action: Action, state: AppState?) -> AppState {
   AppState(
-    todoState: todoReducer(action: action, state: state?.todoState)
+    todoState: TodoState.reducer(action: action, state: state?.todoState)
   )
 }

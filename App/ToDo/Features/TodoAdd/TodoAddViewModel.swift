@@ -5,6 +5,7 @@
 //  Created by TribalScale on 2022-10-04.
 //
 
+import Combine
 import Foundation
 import ToDoShared
 
@@ -18,24 +19,49 @@ class TodoAddViewModel: ObservableObject {
   @Published var titleError: String = ""
   @Published var descriptionError: String = ""
 
+  private var cancellables = Set<AnyCancellable>()
+
   // MARK: - Lifecycle
+
+  init() {
+    $title
+      .sink { [weak self] value in
+        if !value.isEmpty {
+          self?.titleError = ""
+        }
+      }
+      .store(in: &cancellables)
+
+    $description
+      .sink { [weak self] value in
+        if !value.isEmpty {
+          self?.descriptionError = ""
+        }
+      }
+      .store(in: &cancellables)
+  }
 
   // MARK: - Functions
 
   func saveTodo(delay: CGFloat = 0) -> Bool {
-    guard !title.isEmpty else {
+    if title.isEmpty {
       titleError = "Title cannot be empty"
-      return false
+    } else {
+      titleError = ""
     }
 
-    guard !description.isEmpty else {
+    if description.isEmpty {
       descriptionError = "Description cannot be empty"
-      return false
+    } else {
+      descriptionError = ""
     }
 
-    let newTodo = Todo(title: title, description: description, complete: false)
-    store.dispatch(saveToDatabase(todo: newTodo, testingDelay: delay))
-    return true
-  }
+    if titleError.isEmpty && descriptionError.isEmpty {
+      let newTodo = Todo(title: title, description: description, complete: false)
+      store.dispatch(saveToDatabase(todo: newTodo, testingDelay: delay))
+      return true
+    }
 
+    return false
+  }
 }
