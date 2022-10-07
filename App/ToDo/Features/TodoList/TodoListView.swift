@@ -16,6 +16,8 @@ struct TodoListView: View {
   let addViewShadowRadius: CGFloat = 2
   let notchPadding: CGFloat = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0)
 
+  @Environment(\.scenePhase) var scenePhase
+
   @StateObject var viewModel = TodoListViewModel()
 
   @StateObject var todos = store.subscribe { $0.todoState.items }
@@ -65,6 +67,20 @@ struct TodoListView: View {
     .onAppear {
       if todos.current.isEmpty {
         store.dispatch(fetchTodos())
+      }
+    }
+    .onChange(of: scenePhase) { newValue in
+      switch newValue {
+      case .active:
+        switch shortcutAction {
+        case .addTodo:
+          isAddingTodo = true
+          shortcutAction = nil
+        default:
+          break
+        }
+      default:
+        break
       }
     }
   }

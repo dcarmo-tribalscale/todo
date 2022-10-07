@@ -80,6 +80,11 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UILaunchStoryboardName: "Launch Screen.storyboard"
+        UIApplicationShortcutItems:
+          - UIApplicationShortcutItemType: AddTodo
+            UIApplicationShortcutItemIconSymbolName: plus.circle
+            UIApplicationShortcutItemIconType: UIApplicationShortcutItemIconTypePlus
+            UIApplicationShortcutItemTitle: Add Todo
     settings:
       base:
         # iPhone only
@@ -120,6 +125,7 @@ targets:
           else
             echo "WARNING: mint or SwiftLint not installed, use `brew install mint` then `mint bootstrap` to install tools"
           fi
+    scheme: {}
     dependencies:
       - package: ReSwift
       - package: ReSwiftThunk
@@ -189,6 +195,7 @@ targets:
         CURRENT_PROJECT_VERSION: 1
     sources:
       - Widget
+    scheme: {}
     dependencies:
       - sdk: WidgetKit.framework
       - sdk: SwiftUI.framework
