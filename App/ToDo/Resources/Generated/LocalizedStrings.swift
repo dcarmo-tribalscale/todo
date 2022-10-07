@@ -18,6 +18,8 @@ internal enum LocalizedStrings {
     internal enum Input {
       /// Description
       internal static let description = LocalizedStrings.tr("Localizable", "todo_add.input.description", fallback: "Description")
+      /// Due Date
+      internal static let dueDate = LocalizedStrings.tr("Localizable", "todo_add.input.due_date", fallback: "Due Date")
       /// Title
       internal static let title = LocalizedStrings.tr("Localizable", "todo_add.input.title", fallback: "Title")
     }

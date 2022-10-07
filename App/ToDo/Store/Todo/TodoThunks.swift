@@ -10,6 +10,7 @@ import ReSwift
 import ReSwiftThunk
 import ToDoDatabase
 import ToDoShared
+import WidgetKit
 
 func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
@@ -24,22 +25,24 @@ func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   }
 }
 
-func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: CGFloat = 0) -> Thunk<AppState> {
+func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: UInt64? = nil) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
       // Create the todo locally
       dispatch(TodoAction.create(todo: todo))
       do {
         try await syncStateManagedCall(dispatch: dispatch, todoId: todo.id) {
-          throw NSError(domain: "com.dcarmo.Todo", code: 200)
+//          throw NSError(domain: "com.dcarmo.Todo", code: 200)
 
-          // Testing with delay to see spinner on screen
-          DispatchQueue.global().asyncAfter(deadline: .now() + testingDelay) {
-            Task.detached {
-              // sync the todo to Firebase
-              try await dbEngine.save(todo: todo)
-            }
+          if let testingDelay {
+            try await Task.sleep(nanoseconds: testingDelay * 1_000_000_000) // 1 second
           }
+
+          // sync the todo to Firebase
+          try await dbEngine.save(todo: todo)
+
+          // Notify the widget of a change
+          WidgetCenter.shared.reloadAllTimelines()
         }
       } catch {
         let retrySyncState: SyncState = .retry(block: {
@@ -73,10 +76,15 @@ func toggleComplete(on todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> T
         try await syncStateManagedCall(dispatch: dispatch, todoId: todo.id) {
           var updatedTodo = todo
           updatedTodo.complete = !updatedTodo.complete
-          throw NSError(domain: "com.dcarmo.Todo", code: 200)
+
+//          throw NSError(domain: "com.dcarmo.Todo", code: 200)
 
           // sync the todo to Firebase
           try await dbEngine.updateComplete(on: updatedTodo)
+
+          // Notify the widget of a change
+          WidgetCenter.shared.reloadAllTimelines()
+
           dispatch(TodoAction.updateComplete(todo: updatedTodo))
         }
       } catch {

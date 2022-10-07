@@ -102,7 +102,7 @@ public let todoLongDescription = Todo(
   title: "ToDo 2",
   // swiftlint:disable:next line_length
   description: "This is a description for ToDo 2 that is really long and should wrap when it gets big and allow you to put as much text as you want there.",
-  complete: true
+  complete: false
 )
 
 public let todoLongTitle = Todo(
@@ -111,9 +111,23 @@ public let todoLongTitle = Todo(
   complete: true
 )
 
+public let todoSample4 = Todo(
+  title: "Gotta really do this",
+  description: "Make time to do this because I really need to do this",
+  complete: false
+)
+
+public let todoSample5 = Todo(
+  title: "So much to do, what else can I do",
+  description: "Whatever it is I better get at it",
+  complete: true
+)
+
 public let sampleTodos = [
   todoStandard,
   todoLongDescription,
-  todoLongTitle
+  todoLongTitle,
+  todoSample4,
+  todoSample5
 ]
 #endif

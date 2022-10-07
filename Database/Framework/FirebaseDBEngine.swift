@@ -26,7 +26,20 @@ public final class FirebaseDBEngine: DBEngine {
   }
 
   public func getTodos() async throws -> [Todo] {
-    let snapshot = try await databaseRef.child(todoTableName).getData()
+    return try await getTodos(count: nil)
+  }
+
+  public func getTodos(count: UInt? = nil) async throws -> [Todo] {
+    let dbRef = databaseRef
+      .child(todoTableName)
+
+    let snapshot: DataSnapshot
+    if let count {
+      snapshot = try await dbRef.queryLimited(toFirst: count).getData()
+    } else {
+      snapshot = try await dbRef.getData()
+    }
+
     guard let children = snapshot.children.allObjects as? [DataSnapshot] else {
       return []
     }

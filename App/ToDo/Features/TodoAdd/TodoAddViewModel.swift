@@ -43,7 +43,7 @@ class TodoAddViewModel: ObservableObject {
 
   // MARK: - Functions
 
-  func saveTodo(delay: CGFloat = 0) -> Bool {
+  func saveTodo(delay: UInt64? = nil) -> Bool {
     if title.isEmpty {
       titleError = "Title cannot be empty"
     } else {

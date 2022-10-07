@@ -41,7 +41,7 @@ extension TodoState {
 
     case let .removeSyncState(id):
       state.itemsSyncState.removeValue(forKey: id)
-      
+
     }
     return state
   }

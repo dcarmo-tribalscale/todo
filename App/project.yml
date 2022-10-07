@@ -128,6 +128,9 @@ targets:
         implicit: true
       - framework: ToDoShared.framework
         implicit: true
+      - target: ToDoWidget
+        codeSign: false
+        embed: true
 
   ToDoTests:
     type: bundle.unit-test
@@ -165,3 +168,32 @@ targets:
       testTargets:
         - ToDo
         - ToDoUITests
+
+  ToDoWidget:
+    type: app-extension
+    platform: iOS
+    info:
+      path: Widget/Resources/Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: "com.apple.widgetkit-extension"
+    settings:
+      base:
+        # iPhone only
+        TARGETED_DEVICE_FAMILY: 1
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: HQR253M6PT
+        PRODUCT_BUNDLE_IDENTIFIER: com.dcarmo.ToDo.Widget
+        PRODUCT_NAME: ToDo Widget
+        MARKETING_VERSION: 0.0.1
+        CURRENT_PROJECT_VERSION: 1
+    sources:
+      - Widget
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+      - package: SFSafeSymbols
+      - framework: ToDoDatabase.framework
+        implicit: true
+      - framework: ToDoShared.framework
+        implicit: true

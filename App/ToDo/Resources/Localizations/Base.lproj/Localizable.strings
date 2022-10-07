@@ -11,4 +11,5 @@
 "todo_add.nav.title" = "Title";
 "todo_add.input.title" = "Title";
 "todo_add.input.description" = "Description";
+"todo_add.input.due_date" = "Due Date";
 "todo_add.button.save" = "Save";
