@@ -12,7 +12,7 @@ import ToDoDatabase
 import ToDoShared
 import WidgetKit
 
-func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+public func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
       do {
@@ -25,7 +25,7 @@ func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   }
 }
 
-func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: UInt64? = nil) -> Thunk<AppState> {
+public func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: UInt64? = nil) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
       // Create the todo locally
@@ -55,7 +55,7 @@ func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testing
   }
 }
 
-func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+public func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
       do {
@@ -69,7 +69,7 @@ func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> 
   }
 }
 
-func toggleComplete(on todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+public func toggleComplete(on todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
     Task.detached {
       do {

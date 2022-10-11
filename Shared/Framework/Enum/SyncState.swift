@@ -1,41 +1,15 @@
 //
-//  Store.swift
-//  ToDo
+//  SyncState.swift
+//  ToDoStore
 //
-//  Created by TribalScale on 2022-10-03.
+//  Created by TribalScale on 2022-10-07.
 //
 
-import ReSwift
-import ToDoShared
-
-// MARK: - State
-
-struct TodoState {
-  /// Holds the todo items
-  var items: [Todo]
-
-  /// Holds the items that are currently in the process of being sync'd to the server
-  var itemsSyncState: [Todo.ID: SyncState]
-}
-
-// MARK: - CustomDebugStringConvertible
-
-extension TodoState: CustomDebugStringConvertible {
-  var debugDescription: String {
-    return """
-TodoState {
-  items:
-    \(items.debugDescription)
-  itemsSyncState:
-    \(itemsSyncState.debugDescription)
-}
-"""
-  }
-}
+import Foundation
 
 // MARK: - SyncState
 
-enum SyncState {
+public enum SyncState {
   /// Item is in process of syncing
   case syncing
   /// Item has sync'd successfully
@@ -49,7 +23,7 @@ enum SyncState {
 // MARK: - CustomDebugStringConvertible
 
 extension SyncState: CustomDebugStringConvertible {
-  var debugDescription: String {
+  public var debugDescription: String {
     switch self {
     case .syncing: return "syncing"
     case .complete: return "complete"
@@ -62,7 +36,7 @@ extension SyncState: CustomDebugStringConvertible {
 // MARK: - Equatable
 
 extension SyncState: Equatable {
-  static func == (_ lhs: SyncState, _ rhs: SyncState) -> Bool {
+  public static func == (_ lhs: SyncState, _ rhs: SyncState) -> Bool {
     switch (lhs, rhs) {
     case (.syncing, .syncing)
       , (.complete, .complete)
@@ -78,7 +52,7 @@ extension SyncState: Equatable {
 // MARK: - Hashable
 
 extension SyncState: Hashable {
-  func hash(into hasher: inout Hasher) {
+  public func hash(into hasher: inout Hasher) {
     hasher.combine(self)
   }
 }

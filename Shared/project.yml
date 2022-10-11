@@ -3,6 +3,9 @@
 
 name: ToDoShared
 
+include:
+  - ../xcodegen/framework.yml
+
 options:
   indentWidth: 2
   tabWidth: 2
@@ -11,40 +14,7 @@ options:
 
 targets:
   ToDoShared:
-    type: framework
-    platform: iOS
-    settings:
-      base:
-        # iPhone only
-        TARGETED_DEVICE_FAMILY: 1
-        # Fix issue with framework requiring signing. Likely need to find a better fix for this.
-        # CODE_SIGNING_ALLOWED: "NO"
-        # CODE_SIGN_STYLE: Manual
-        # DEVELOPMENT_TEAM: HQR253M6PT
-        # CODE_SIGN_IDENTITY: "Apple Developer"
-        PRODUCT_BUNDLE_IDENTIFIER: com.dcarmo.ToDo.Shared
-        # Versioning
-        MARKETING_VERSION: 0.0.1
-        CURRENT_PROJECT_VERSION: 1
-        GENERATE_INFOPLIST_FILE: "YES"
+    templates:
+      - ModularFramework
     sources:
       - Framework
-    preBuildScripts:
-      - name: "[TS] nicklockwood/SwiftFormat"
-        basedOnDependencyAnalysis: false
-        script: |
-          #export PATH="$PATH:/opt/homebrew/bin"
-          #if which mint > /dev/null; then
-          #  mint run nicklockwood/SwiftFormat@0.50.0 --config "${SRCROOT}/../.swiftformat" "$SRCROOT"
-          #else
-          #  echo "WARNING: mint or SwiftFormat not installed, use `brew install mint` then `mint bootstrap` to install tools"
-          #fi
-      - name: "[TS] realm/SwiftLint"
-        basedOnDependencyAnalysis: false
-        script: |
-          export PATH="$PATH:/opt/homebrew/bin"
-          if which mint > /dev/null; then
-            mint run realm/SwiftLint@0.49.1 --config "${SRCROOT}/../.swiftlint.yml"
-          else
-            echo "WARNING: mint or SwiftLint not installed, use `brew install mint` then `mint bootstrap` to install tools"
-          fi

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Store/ToDoStore.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Shared/ToDoShared.xcodeproj">
    </FileRef>
    <FileRef

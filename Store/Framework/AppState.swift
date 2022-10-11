@@ -9,14 +9,14 @@ import ReSwift
 
 // MARK: - State
 
-struct AppState {
-  let todoState: TodoState
+public struct AppState {
+  public let todoState: TodoState
 }
 
 // MARK: - CustomDebugStringConvertible
 
 extension AppState: CustomDebugStringConvertible {
-  var debugDescription: String {
+  public var debugDescription: String {
     return """
 State: {
   todoState: \(todoState.debugDescription)

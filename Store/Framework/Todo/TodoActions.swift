@@ -9,7 +9,7 @@ import Foundation
 import ReSwift
 import ToDoShared
 
-enum TodoAction: Action {
+public enum TodoAction: Action {
   /// Create a single Todo
   case create(todo: Todo)
 

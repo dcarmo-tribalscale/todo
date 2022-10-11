@@ -9,8 +9,8 @@ import Combine
 import ReSwift
 import SwiftUI
 
-class ObservableState<T: Hashable>: ObservableObject, StoreSubscriber, ObservableSubscription {
-  @Published fileprivate(set) var current: T
+public class ObservableState<T: Hashable>: ObservableObject, StoreSubscriber, ObservableSubscription {
+  @Published public fileprivate(set) var current: T
   let selector: (AppState) -> T
   fileprivate let animation: SwiftUI.Animation?
   fileprivate var isSubscribed: Bool = false
@@ -25,13 +25,13 @@ class ObservableState<T: Hashable>: ObservableObject, StoreSubscriber, Observabl
     subscribe()
   }
 
-  func subscribe() {
+  public func subscribe() {
     guard !isSubscribed else { return }
     store.subscribe(self, transform: { [self] in $0.select(selector) })
     isSubscribed = true
   }
 
-  func unsubscribe() {
+  public func unsubscribe() {
     guard isSubscribed else { return }
     store.unsubscribe(self)
     isSubscribed = false
@@ -58,13 +58,13 @@ class ObservableState<T: Hashable>: ObservableObject, StoreSubscriber, Observabl
 
   public let objectDidChange = PassthroughSubject<DidChangeSubject<T>, Never>()
 
-  struct DidChangeSubject<T> {
+  public struct DidChangeSubject<T> {
     let old: T
     let new: T
   }
 }
 
-class ObservableThrottledState<T: Hashable>: ObservableState<T> {
+public class ObservableThrottledState<T: Hashable>: ObservableState<T> {
   // MARK: Lifecycle
 
   public init(
@@ -99,7 +99,7 @@ class ObservableThrottledState<T: Hashable>: ObservableState<T> {
 }
 
 // swiftlint:disable:next line_length
-class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableObject, StoreSubscriber, ObservableSubscription {
+public class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableObject, StoreSubscriber, ObservableSubscription {
   @Published public var current: Derived
 
   let selector: (AppState) -> Original
@@ -122,13 +122,13 @@ class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableO
     subscribe()
   }
 
-  func subscribe() {
+  public func subscribe() {
     guard !isSubscribed else { return }
     store.subscribe(self, transform: { [self] in $0.select(selector) })
     isSubscribed = true
   }
 
-  func unsubscribe() {
+  public func unsubscribe() {
     guard isSubscribed else { return }
     store.unsubscribe(self)
     isSubscribed = false
@@ -157,14 +157,14 @@ class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableO
   public let objectWillChange = PassthroughSubject<ChangeSubject<Derived>, Never>()
   public let objectDidChange = PassthroughSubject<ChangeSubject<Derived>, Never>()
 
-  struct ChangeSubject<Derived> {
+  public struct ChangeSubject<Derived> {
     let old: Derived
     let new: Derived
   }
 }
 
 // swiftlint:disable:next line_length
-class ObservableDerivedThrottledState<Original: Hashable, Derived: Hashable>: ObservableDerivedState<Original, Derived> {
+public class ObservableDerivedThrottledState<Original: Hashable, Derived: Hashable>: ObservableDerivedState<Original, Derived> {
   // MARK: Lifecycle
 
   public init(
@@ -199,8 +199,8 @@ class ObservableDerivedThrottledState<Original: Hashable, Derived: Hashable>: Ob
   private let objectThrottled = PassthroughSubject<Original, Never>()
 }
 
-extension Store where State == AppState {
-  func subscribe<T>(
+public extension Store where State == AppState {
+  public func subscribe<T>(
     select selector: @escaping (AppState) -> (T),
     animation: SwiftUI.Animation? = nil
   ) -> ObservableState<T> {
@@ -210,7 +210,7 @@ extension Store where State == AppState {
     )
   }
 
-  func subscribe<Original, Derived>(
+  public func subscribe<Original, Derived>(
     select selector: @escaping (AppState) -> (Original),
     transform: @escaping (Original) -> Derived,
     animation: SwiftUI.Animation? = nil
@@ -222,7 +222,7 @@ extension Store where State == AppState {
     )
   }
 
-  func subscribeThrottled<T>(
+  public func subscribeThrottled<T>(
     select selector: @escaping (AppState) -> (T),
     throttleInMs: Int = 350,
     animation: SwiftUI.Animation? = nil
@@ -234,7 +234,7 @@ extension Store where State == AppState {
     )
   }
 
-  func subscribeThrottled<Original, Derived>(
+  public func subscribeThrottled<Original, Derived>(
     select selector: @escaping (AppState) -> (Original),
     transform: @escaping (Original) -> Derived,
     throttleInMs: Int = 350,
@@ -249,10 +249,10 @@ extension Store where State == AppState {
   }
 }
 
-protocol ObservableSubscription {
+public protocol ObservableSubscription {
   func unsubscribe()
 }
 
-protocol Initializable {
+public protocol Initializable {
   init()
 }

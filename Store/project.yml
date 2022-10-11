@@ -1,7 +1,7 @@
 # Project Spec:
 # https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
 
-name: ToDoDatabase
+name: ToDoStore
 
 include:
   - ../xcodegen/framework.yml
@@ -13,20 +13,23 @@ options:
     iOS: 14.0
 
 packages:
-  Firebase:
-    url: https://github.com/firebase/firebase-ios-sdk
-    majorVersion: 9.0.0
+  ReSwift:
+    url: https://github.com/ReSwift/ReSwift
+    majorVersion: 6.0.0
+  ReSwiftThunk:
+    url: https://github.com/ReSwift/ReSwift-Thunk
+    majorVersion: 2.0.0
 
 targets:
-  ToDoDatabase:
+  ToDoStore:
     templates:
       - ModularFramework
     sources:
       - Framework
     dependencies:
-      - package: Firebase
-        product: FirebaseDatabase
-      - package: Firebase
-        product: FirebaseDatabaseSwift
+      - package: ReSwift
+      - package: ReSwiftThunk
       - framework: ToDoShared.framework
+        implicit: true
+      - framework: ToDoDatabase.framework
         implicit: true

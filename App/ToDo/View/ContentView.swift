@@ -7,8 +7,8 @@
 
 import SFSafeSymbols
 import SwiftUI
-import ReSwift
 import ToDoShared
+import ToDoStore
 
 struct ContentView: View {
 

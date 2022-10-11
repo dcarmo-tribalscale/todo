@@ -49,12 +49,6 @@ fileGroups:
   # - .swiftformat
 
 packages:
-  ReSwift:
-    url: https://github.com/ReSwift/ReSwift
-    majorVersion: 6.0.0
-  ReSwiftThunk:
-    url: https://github.com/ReSwift/ReSwift-Thunk
-    majorVersion: 2.0.0
   SFSafeSymbols:
     url: https://github.com/SFSafeSymbols/SFSafeSymbols
     majorVersion: 4.0.0
@@ -127,12 +121,12 @@ targets:
           fi
     scheme: {}
     dependencies:
-      - package: ReSwift
-      - package: ReSwiftThunk
       - package: SFSafeSymbols
       - framework: ToDoDatabase.framework
         implicit: true
       - framework: ToDoShared.framework
+        implicit: true
+      - framework: ToDoStore.framework
         implicit: true
       - target: ToDoWidget
         codeSign: false

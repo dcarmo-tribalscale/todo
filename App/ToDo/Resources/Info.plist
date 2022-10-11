@@ -21,6 +21,8 @@
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
+			<key>UIApplicationShortcutItemIconSymbolName</key>
+			<string>plus.circle</string>
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutItemIconTypePlus</string>
 			<key>UIApplicationShortcutItemTitle</key>
