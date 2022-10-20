@@ -19,6 +19,7 @@ targetTemplates:
         MARKETING_VERSION: 0.0.1
         CURRENT_PROJECT_VERSION: 1
         GENERATE_INFOPLIST_FILE: "YES"
+        SWIFT_STRICT_CONCURRENCY: complete
     preBuildScripts:
       - name: "[TS] nicklockwood/SwiftFormat"
         basedOnDependencyAnalysis: false

@@ -12,9 +12,9 @@ import ToDoDatabase
 import ToDoShared
 import WidgetKit
 
-public func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+public func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine.shared) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
-    Task.detached {
+    Task {
       do {
         let todos = try await dbEngine.getTodos()
         dispatch(TodoAction.save(todos: todos))
@@ -25,9 +25,9 @@ public func fetchTodos(dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppStat
   }
 }
 
-public func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), testingDelay: UInt64? = nil) -> Thunk<AppState> {
+public func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine.shared, testingDelay: UInt64? = nil) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
-    Task.detached {
+    Task {
       // Create the todo locally
       dispatch(TodoAction.create(todo: todo))
       do {
@@ -55,13 +55,17 @@ public func saveToDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine(), 
   }
 }
 
-public func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+public func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine.shared) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
-    Task.detached {
+    Task {
       do {
         // sync the todo to Firebase
         try await dbEngine.delete(todo: todo)
+
         dispatch(TodoAction.delete(id: todo.id))
+
+        // Notify the widget of a change
+        WidgetCenter.shared.reloadAllTimelines()
       } catch {
         print(error)
       }
@@ -69,9 +73,9 @@ public func deleteFromDatabase(todo: Todo, dbEngine: DBEngine = FirebaseDBEngine
   }
 }
 
-public func toggleComplete(on todo: Todo, dbEngine: DBEngine = FirebaseDBEngine()) -> Thunk<AppState> {
+public func toggleComplete(on todo: Todo, dbEngine: DBEngine = FirebaseDBEngine.shared) -> Thunk<AppState> {
   return Thunk<AppState> { dispatch, _ in
-    Task.detached {
+    Task {
       do {
         try await syncStateManagedCall(dispatch: dispatch, todoId: todo.id) {
           var updatedTodo = todo

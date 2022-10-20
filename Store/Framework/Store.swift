@@ -15,4 +15,4 @@ let middlewares = [
   thunkMiddleware
 ]
 
-public var store = Store(reducer: appReducer, state: nil, middleware: middlewares)
+public let store = Store(reducer: appReducer, state: nil, middleware: middlewares)

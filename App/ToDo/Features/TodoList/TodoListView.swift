@@ -13,13 +13,9 @@ struct TodoListView: View {
 
   // MARK: - Properties
 
-  let addViewHeight: CGFloat = 300
-  let addViewShadowRadius: CGFloat = 2
-  let notchPadding: CGFloat = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0)
-
   @Environment(\.scenePhase) var scenePhase
 
-  @StateObject var viewModel = TodoListViewModel()
+  @StateObject var viewModel = TodoListView.ViewModel()
 
   @StateObject var todos = store.subscribe { $0.todoState.items }
   @StateObject var todosSyncState = store.subscribe { $0.todoState.itemsSyncState }
@@ -63,7 +59,7 @@ struct TodoListView: View {
       }
     }
     .sheet(isPresented: $isAddingTodo) {
-      TodoAddView(viewModel: TodoAddViewModel())
+      TodoAddView()
     }
     .onAppear {
       if todos.current.isEmpty {

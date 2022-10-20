@@ -8,6 +8,7 @@
 import WidgetKit
 import SwiftUI
 import SFSafeSymbols
+import ToDoAuth
 import ToDoDatabase
 import ToDoShared
 
@@ -34,7 +35,7 @@ struct TodoWidgetProvider: TimelineProvider {
   }
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<TodoTimelineEntry>) -> Void) {
-    let database = FirebaseDBEngine()
+    let database = FirebaseDBEngine.shared
 
     Task.detached {
       do {
@@ -109,8 +110,11 @@ struct TodoWidget: Widget {
   // MARK: - Lifecycle
 
   init() {
-    let database = FirebaseDBEngine()
-    database.setup()
+    let auth = FirebaseAuthEngine.shared
+    auth.setup()
+
+    let database = FirebaseDBEngine.shared
+    database.setup(authEngine: auth)
   }
 
   // MARK: - Body

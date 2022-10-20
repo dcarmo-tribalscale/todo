@@ -1,7 +1,7 @@
 # Project Spec:
 # https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
 
-name: ToDoDatabase
+name: ToDoAuth
 
 include:
   - ../xcodegen/framework.yml
@@ -18,19 +18,11 @@ packages:
     majorVersion: 9.0.0
 
 targets:
-  ToDoDatabase:
+  ToDoAuth:
     templates:
       - ModularFramework
     sources:
       - Framework
     dependencies:
       - package: Firebase
-        product: FirebaseDatabase
-      - package: Firebase
-        product: FirebaseDatabaseSwift
-      - package: Firebase
         product: FirebaseAuth
-      - framework: ToDoShared.framework
-        implicit: true
-      - framework: ToDoAuth.framework
-        implicit: true

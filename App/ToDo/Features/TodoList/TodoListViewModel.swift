@@ -9,40 +9,42 @@ import Foundation
 import Combine
 import ToDoStore
 
-class TodoListViewModel: ObservableObject {
+extension TodoListView {
+  class ViewModel: ObservableObject {
 
-  // MARK: - Properties
+    // MARK: - Properties
 
-//  @Published var isAddingTodo: Bool = false
+    //  @Published var isAddingTodo: Bool = false
 
-//  var todos = store.subscribe {
-//    print("**** State change:\n\($0.todoState)")
-//    return $0.todoState.items
-//  }
+    //  var todos = store.subscribe {
+    //    print("**** State change:\n\($0.todoState)")
+    //    return $0.todoState.items
+    //  }
 
-//  private var cancellables = Set<AnyCancellable>()
+    //  private var cancellables = Set<AnyCancellable>()
 
-  // MARK: - Lifecycle
+    // MARK: - Lifecycle
 
-//  init() {
-//    todos.objectDidChange
-//      .sink { value in
-//        print("**** Old State:\n\(value.old)")
-//        print("**** New State:\n\(value.new)")
-//      }
-//      .store(in: &cancellables)
-//  }
+    //  init() {
+    //    todos.objectDidChange
+    //      .sink { value in
+    //        print("**** Old State:\n\(value.old)")
+    //        print("**** New State:\n\(value.new)")
+    //      }
+    //      .store(in: &cancellables)
+    //  }
 
-  // MARK: - Functions
+    // MARK: - Functions
 
-  func deleteTodo(at offsets: IndexSet) {
-    for index in offsets {
-      let deleteTodo = store.state.todoState.items[index]
-      store.dispatch(deleteFromDatabase(todo: deleteTodo))
+    func deleteTodo(at offsets: IndexSet) {
+      for index in offsets {
+        let deleteTodo = store.state.todoState.items[index]
+        store.dispatch(deleteFromDatabase(todo: deleteTodo))
+      }
     }
-  }
 
-//  func openAddTodo() {
-//    isAddingTodo = true
-//  }
+    //  func openAddTodo() {
+    //    isAddingTodo = true
+    //  }
+  }
 }

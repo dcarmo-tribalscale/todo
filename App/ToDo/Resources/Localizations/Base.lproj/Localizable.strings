@@ -6,8 +6,33 @@
   
 */
 
+"tabbar.todos.title" = "Todos";
+"tabbar.settings.title" = "Settings";
+
+"settings.nav.title" = "Settings";
+"settings.sign_out.title" = "Sign Out";
+
+"user.sign_in.title" = "Sign In";
+"user.sign_in.email" = "Email";
+"user.sign_in.email.error.empty" = "You must provide an email.";
+"user.sign_in.password" = "Password";
+"user.sign_in.password.error.empty" = "You must provide a password.";
+"user.sign_in.sign_in" = "Sign In";
+"user.sign_in.sign_up" = "Sign Up";
+
+"user.sign_up.title" = "Sign Up";
+"user.sign_up.email" = "Email";
+"user.sign_up.email.error.empty" = "You must provide an email.";
+"user.sign_up.password" = "Password";
+"user.sign_up.password.error.empty" = "You must provide a password.";
+"user.sign_up.confirm_password" = "Confirm Password";
+"user.sign_up.confirm_password.error.empty" = "You must confirm your password.";
+"user.sign_up.confirm_password.error.missmatch" = "Your password confirmation must match the above password.";
+"user.sign_up.sign_up" = "Sign Up";
+
 "todo_list.nav.title" = "Todos";
 "todo_list.empty" = "There's nothing Todo! Use the plus to add a new Todo.";
+
 "todo_add.nav.title" = "Title";
 "todo_add.input.title" = "Title";
 "todo_add.input.description" = "Description";

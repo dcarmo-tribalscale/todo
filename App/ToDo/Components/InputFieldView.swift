@@ -25,11 +25,7 @@ struct InputFieldView: View {
 
       if !error.isEmpty {
         Text(error)
-          .font(.footnote)
-          .foregroundColor(.red)
-          .multilineTextAlignment(.leading)
-          .padding(.vertical, 4)
-          .transition(.opacity)
+          .modifier(ErrorTextModifier())
       }
 
       TextField(placeholder, text: $value)

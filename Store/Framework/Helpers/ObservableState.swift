@@ -98,7 +98,6 @@ public class ObservableThrottledState<T: Hashable>: ObservableState<T> {
   private let objectThrottled = PassthroughSubject<T, Never>()
 }
 
-// swiftlint:disable:next line_length
 public class ObservableDerivedState<Original: Hashable, Derived: Hashable>: ObservableObject, StoreSubscriber, ObservableSubscription {
   @Published public var current: Derived
 
@@ -163,7 +162,6 @@ public class ObservableDerivedState<Original: Hashable, Derived: Hashable>: Obse
   }
 }
 
-// swiftlint:disable:next line_length
 public class ObservableDerivedThrottledState<Original: Hashable, Derived: Hashable>: ObservableDerivedState<Original, Derived> {
   // MARK: Lifecycle
 
@@ -200,7 +198,7 @@ public class ObservableDerivedThrottledState<Original: Hashable, Derived: Hashab
 }
 
 public extension Store where State == AppState {
-  public func subscribe<T>(
+  func subscribe<T>(
     select selector: @escaping (AppState) -> (T),
     animation: SwiftUI.Animation? = nil
   ) -> ObservableState<T> {
@@ -210,7 +208,7 @@ public extension Store where State == AppState {
     )
   }
 
-  public func subscribe<Original, Derived>(
+  func subscribe<Original, Derived>(
     select selector: @escaping (AppState) -> (Original),
     transform: @escaping (Original) -> Derived,
     animation: SwiftUI.Animation? = nil
@@ -222,7 +220,7 @@ public extension Store where State == AppState {
     )
   }
 
-  public func subscribeThrottled<T>(
+  func subscribeThrottled<T>(
     select selector: @escaping (AppState) -> (T),
     throttleInMs: Int = 350,
     animation: SwiftUI.Animation? = nil
@@ -234,7 +232,7 @@ public extension Store where State == AppState {
     )
   }
 
-  public func subscribeThrottled<Original, Derived>(
+  func subscribeThrottled<Original, Derived>(
     select selector: @escaping (AppState) -> (Original),
     transform: @escaping (Original) -> Derived,
     throttleInMs: Int = 350,

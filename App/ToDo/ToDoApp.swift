@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+import ToDoAuth
 import ToDoDatabase
+import FirebaseCore
 import UIKit
 
 enum ShortcutAction: String {
@@ -19,7 +21,6 @@ var shortcutAction: ShortcutAction?
 // MARK: - AppDelegate
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-
   func application(_ application: UIApplication,
                    configurationForConnecting connectingSceneSession: UISceneSession,
                    options: UIScene.ConnectionOptions
@@ -62,8 +63,13 @@ struct ToDoApp: App {
   // MARK: - Lifecycle
 
   init() {
-    let database = FirebaseDBEngine()
-    database.setup()
+    FirebaseApp.configure()
+
+    let auth = FirebaseAuthEngine.shared
+    auth.setup()
+
+    let database = FirebaseDBEngine.shared
+    database.setup(authEngine: auth)
   }
 
   // MARK: - Body

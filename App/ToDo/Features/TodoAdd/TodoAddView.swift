@@ -13,7 +13,7 @@ struct TodoAddView: View {
 
   @Environment(\.presentationMode) private var presentationMode
 
-  @ObservedObject var viewModel: TodoAddViewModel
+  @ObservedObject var viewModel = TodoAddView.ViewModel()
 
   // MARK: - Body
 
@@ -36,33 +36,19 @@ struct TodoAddView: View {
           }
         } label: {
           Text(LocalizedStrings.TodoAdd.Button.save)
-            .font(.system(size: 24, weight: .bold, design: .default))
-            .padding()
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .background(
-              RoundedRectangle(cornerRadius: 9)
-                .fill(.blue)
-            )
-            .foregroundColor(.white)
+            .modifier(PrimaryButtonModifier())
         }
 
-        #if DEBUG
+#if DEBUG
         Button {
           if viewModel.saveTodo(delay: 4) {
             presentationMode.wrappedValue.dismiss()
           }
         } label: {
           Text("Save Delayed")
-            .font(.system(size: 24, weight: .bold, design: .default))
-            .padding()
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .background(
-              RoundedRectangle(cornerRadius: 9)
-                .fill(.blue)
-            )
-            .foregroundColor(.white)
+            .modifier(PrimaryButtonModifier())
         }
-        #endif
+#endif
       }
 
       Spacer()
@@ -76,6 +62,6 @@ struct TodoAddView: View {
 
 struct TodoAddView_Previews: PreviewProvider {
   static var previews: some View {
-    TodoAddView(viewModel: TodoAddViewModel())
+    TodoAddView()
   }
 }

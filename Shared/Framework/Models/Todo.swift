@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Todo Struct
 
-public struct Todo {
+public struct Todo: Sendable {
 
   // MARK: - Properties
 

@@ -52,6 +52,9 @@ packages:
   SFSafeSymbols:
     url: https://github.com/SFSafeSymbols/SFSafeSymbols
     majorVersion: 4.0.0
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    majorVersion: 9.0.0
   Quick:
     url: https://github.com/Quick/Quick
     majorVersion: 5.0.0
@@ -89,6 +92,7 @@ targets:
         PRODUCT_NAME: ToDo
         MARKETING_VERSION: 0.0.1
         CURRENT_PROJECT_VERSION: 1
+        SWIFT_STRICT_CONCURRENCY: complete
     sources:
       - ToDo
     preBuildScripts:
@@ -122,6 +126,8 @@ targets:
     scheme: {}
     dependencies:
       - package: SFSafeSymbols
+      - package: Firebase
+        product: FirebaseDatabase
       - framework: ToDoDatabase.framework
         implicit: true
       - framework: ToDoShared.framework

@@ -6,32 +6,44 @@
 //
 
 import Foundation
-import FirebaseCore
 import FirebaseDatabase
 import FirebaseDatabaseSwift
+import ToDoAuth
 import ToDoShared
+import Combine
 
 public final class FirebaseDBEngine: DBEngine {
 
+  // MARK: - Properties
+
   private let todoTableName = "todos"
 
-  private lazy var databaseRef: DatabaseReference = {
-    Database.database().reference()
-  }()
+  private let databaseRef: DatabaseReference = Database.database().reference()
 
-  public init() { }
+  private var authEngine: AuthEngine?
 
-  public func setup() {
-    FirebaseApp.configure()
+  public static let shared: DBEngine = FirebaseDBEngine()
+
+  // MARK: - Lifecycle
+
+  private init() { }
+
+  public func setup(authEngine: AuthEngine) {
+    self.authEngine = authEngine
   }
+
+  // MARK: - RealTimeDatabase
 
   public func getTodos() async throws -> [Todo] {
     return try await getTodos(count: nil)
   }
 
   public func getTodos(count: UInt? = nil) async throws -> [Todo] {
+    guard let currentUser = authEngine?.currentUser else { return [] }
+
     let dbRef = databaseRef
       .child(todoTableName)
+      .child(currentUser.uid)
 
     let snapshot: DataSnapshot
     if let count {
@@ -50,22 +62,31 @@ public final class FirebaseDBEngine: DBEngine {
   }
 
   public func save(todo: Todo) async throws {
+    guard let currentUser = authEngine?.currentUser else { return }
+
     try databaseRef
       .child(todoTableName)
+      .child(currentUser.uid)
       .child(todo.id)
       .setValue(from: todo)
   }
 
   public func delete(todo: Todo) async throws {
+    guard let currentUser = authEngine?.currentUser else { return }
+
     try await databaseRef
       .child(todoTableName)
+      .child(currentUser.uid)
       .child(todo.id)
       .removeValue()
   }
 
   public func updateComplete(on todo: Todo) async throws {
+    guard let currentUser = authEngine?.currentUser else { return }
+
     try await databaseRef
       .child(todoTableName)
+      .child(currentUser.uid)
       .child(todo.id)
       .updateChildValues([
         "complete": todo.complete,
