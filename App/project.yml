@@ -204,3 +204,27 @@ targets:
         implicit: true
       - framework: ToDoShared.framework
         implicit: true
+
+  ToDoWatch:
+    type: application.watchapp
+    platform: watchOS
+    deploymentTarget:
+      watchOS: 9.1
+    settings:
+      base:
+        # iPhone only
+        TARGETED_DEVICE_FAMILY: 1
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: HQR253M6PT
+        PRODUCT_BUNDLE_IDENTIFIER: com.dcarmo.ToDo.Watch
+        PRODUCT_NAME: ToDo Watch
+        MARKETING_VERSION: 0.0.1
+        CURRENT_PROJECT_VERSION: 1
+    sources:
+      - WatchApp
+    dependencies:
+      - sdk: WatchKit.framework
+      - framework: ToDoDatabase.framework
+        implicit: true
+      - framework: ToDoShared.framework
+        implicit: true

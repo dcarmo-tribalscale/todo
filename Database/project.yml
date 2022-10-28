@@ -32,5 +32,3 @@ targets:
         product: FirebaseAuth
       - framework: ToDoShared.framework
         implicit: true
-      - framework: ToDoAuth.framework
-        implicit: true

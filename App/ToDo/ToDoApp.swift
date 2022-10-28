@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ToDoAuth
 import ToDoDatabase
 import FirebaseCore
 import UIKit
@@ -63,9 +62,8 @@ struct ToDoApp: App {
   // MARK: - Lifecycle
 
   init() {
-    FirebaseApp.configure()
-
     let auth = FirebaseAuthEngine.shared
+    auth.configure()
     auth.setup()
 
     let database = FirebaseDBEngine.shared

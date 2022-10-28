@@ -16,7 +16,7 @@ extension ContentView {
 
     // MARK: - Properties
 
-    private let auth: DBEngine
+    private let auth: AuthEngine
 
     @Published var isLoggedIn: Bool = false
 
@@ -24,8 +24,8 @@ extension ContentView {
 
     // MARK: - Lifecycle
 
-    init(auth: DBEngine = FirebaseDBEngine.shared) {
-      self.auth = auth
+    init(authEngine: AuthEngine = FirebaseAuthEngine.shared) {
+      self.auth = authEngine
 
       self.auth.isLoggedIn
         .sink { [weak self] isLoggedIn in

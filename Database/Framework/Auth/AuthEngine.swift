@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import FirebaseAuth
 
-public protocol AuthEngine {
+public protocol AuthEngine: Configurable {
 
   var isLoggedIn: CurrentValueSubject<Bool, Never> { get }
   var currentUser: User? { get }

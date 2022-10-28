@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import ToDoAuth
+import ToDoDatabase
 
 struct SettingsView: View {
 
@@ -31,6 +31,7 @@ struct SettingsView: View {
           Text(LocalizedStrings.Settings.SignOut.title)
             .modifier(PrimaryButtonModifier())
         }
+        .padding()
       }
       .navigationTitle(LocalizedStrings.Settings.Nav.title)
     }

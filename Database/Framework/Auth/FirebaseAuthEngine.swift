@@ -10,7 +10,7 @@ import Foundation
 import FirebaseCore
 import FirebaseAuth
 
-public class FirebaseAuthEngine: AuthEngine {
+public class FirebaseAuthEngine {
 
   // MARK: - Properties
 
@@ -24,6 +24,28 @@ public class FirebaseAuthEngine: AuthEngine {
 
   public init() { }
 
+  deinit {
+    if let stateChangedHandler {
+      Auth.auth().removeStateDidChangeListener(stateChangedHandler)
+    }
+  }
+
+}
+
+// MARK: - Configurable
+
+extension FirebaseAuthEngine {
+
+  public func configure() {
+    FirebaseApp.configure()
+  }
+
+}
+
+// MARK: - AuthEngine
+
+extension FirebaseAuthEngine: AuthEngine {
+
   public func setup() {
     self.isLoggedIn.send(currentUser != nil)
     self.stateChangedHandler = Auth.auth().addStateDidChangeListener { [weak self] _, user in
@@ -32,14 +54,6 @@ public class FirebaseAuthEngine: AuthEngine {
       self.isLoggedIn.send(user != nil)
     }
   }
-
-  deinit {
-    if let stateChangedHandler {
-      Auth.auth().removeStateDidChangeListener(stateChangedHandler)
-    }
-  }
-
-  // MARK: - Methods
 
   public var currentUser: User? {
     Auth.auth().currentUser

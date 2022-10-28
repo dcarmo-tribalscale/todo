@@ -7,10 +7,9 @@
 
 import Combine
 import Foundation
-import ToDoAuth
 import ToDoShared
 
-public protocol DBEngine: AnyObject, Sendable {
+public protocol DBEngine: AnyObject, Sendable, Configurable {
   func setup(authEngine: AuthEngine)
   func getTodos() async throws -> [Todo]
   func getTodos(count: UInt?) async throws -> [Todo]

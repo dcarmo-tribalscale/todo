@@ -8,7 +8,6 @@
 import WidgetKit
 import SwiftUI
 import SFSafeSymbols
-import ToDoAuth
 import ToDoDatabase
 import ToDoShared
 

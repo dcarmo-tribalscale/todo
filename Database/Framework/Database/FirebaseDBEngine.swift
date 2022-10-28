@@ -6,13 +6,13 @@
 //
 
 import Foundation
+import FirebaseCore
 import FirebaseDatabase
 import FirebaseDatabaseSwift
-import ToDoAuth
 import ToDoShared
 import Combine
 
-public final class FirebaseDBEngine: DBEngine {
+public final class FirebaseDBEngine {
 
   // MARK: - Properties
 
@@ -27,12 +27,25 @@ public final class FirebaseDBEngine: DBEngine {
   // MARK: - Lifecycle
 
   private init() { }
+}
+
+// MARK: - Configurable
+
+extension FirebaseDBEngine {
+
+  public func configure() {
+    FirebaseApp.configure()
+  }
+  
+}
+
+// MARK: - DBEngine
+
+extension FirebaseDBEngine: DBEngine {
 
   public func setup(authEngine: AuthEngine) {
     self.authEngine = authEngine
   }
-
-  // MARK: - RealTimeDatabase
 
   public func getTodos() async throws -> [Todo] {
     return try await getTodos(count: nil)
