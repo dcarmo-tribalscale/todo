@@ -126,8 +126,6 @@ targets:
     scheme: {}
     dependencies:
       - package: SFSafeSymbols
-      - package: Firebase
-        product: FirebaseDatabase
       - framework: ToDoDatabase.framework
         implicit: true
       - framework: ToDoShared.framework
@@ -179,7 +177,7 @@ targets:
     type: app-extension
     platform: iOS
     info:
-      path: Widget/Resources/Info.plist
+      path: ToDoWidget/Resources/Info.plist
       properties:
         NSExtension:
           NSExtensionPointIdentifier: "com.apple.widgetkit-extension"
@@ -194,11 +192,11 @@ targets:
         MARKETING_VERSION: 0.0.1
         CURRENT_PROJECT_VERSION: 1
     sources:
-      - Widget
+      - ToDoWidget
     scheme: {}
     dependencies:
-      - sdk: WidgetKit.framework
       - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
       - package: SFSafeSymbols
       - framework: ToDoDatabase.framework
         implicit: true
@@ -206,14 +204,22 @@ targets:
         implicit: true
 
   ToDoWatch:
-    type: application.watchapp
+    type: application
     platform: watchOS
     deploymentTarget:
-      watchOS: 9.1
+      watchOS: 7.0
+    info:
+      path: ToDoWatch/Resources/Info.plist
+      properties:
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: com.dcarmo.ToDo
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleDisplayName: ToDo
     settings:
       base:
-        # iPhone only
-        TARGETED_DEVICE_FAMILY: 1
+        # Watch only
+        TARGETED_DEVICE_FAMILY: 4
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: HQR253M6PT
         PRODUCT_BUNDLE_IDENTIFIER: com.dcarmo.ToDo.Watch
@@ -221,10 +227,32 @@ targets:
         MARKETING_VERSION: 0.0.1
         CURRENT_PROJECT_VERSION: 1
     sources:
-      - WatchApp
+      - ToDoWatch
+    scheme: {}
+    preBuildScripts:
+      - name: "[TS] nicklockwood/SwiftFormat"
+        basedOnDependencyAnalysis: false
+        script: |
+          #export PATH="$PATH:/opt/homebrew/bin"
+          #if which mint > /dev/null; then
+          #  mint run nicklockwood/SwiftFormat@0.50.0 --config "${SRCROOT}/../.swiftformat" "$SRCROOT"
+          #else
+          #  echo "WARNING: mint or SwiftFormat not installed, use `brew install mint` then `mint bootstrap` to install tools"
+          #fi
+      - name: "[TS] realm/SwiftLint"
+        basedOnDependencyAnalysis: false
+        script: |
+          export PATH="$PATH:/opt/homebrew/bin"
+          if which mint > /dev/null; then
+            mint run realm/SwiftLint@0.49.1 --config "${SRCROOT}/../.swiftlint.yml"
+          else
+            echo "WARNING: mint or SwiftLint not installed, use `brew install mint` then `mint bootstrap` to install tools"
+          fi
     dependencies:
-      - sdk: WatchKit.framework
-      - framework: ToDoDatabase.framework
-        implicit: true
-      - framework: ToDoShared.framework
-        implicit: true
+      - sdk: SwiftUI.framework
+      - package: SFSafeSymbols
+      # Says it can't find these frameworks. Guessing that the data has to come from the app itself.
+      # - framework: ToDoDatabase.framework
+      #   implicit: true
+      # - framework: ToDoShared.framework
+      #   implicit: true

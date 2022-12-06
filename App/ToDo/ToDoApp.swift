@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ToDoDatabase
-import FirebaseCore
 import UIKit
 
 enum ShortcutAction: String {

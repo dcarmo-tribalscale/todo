@@ -34,14 +34,14 @@ struct TodoListView: View {
           .fontWeight(.semibold)
           .multilineTextAlignment(.center)
           .padding()
-      } else {
-        List {
-          ForEach(todos.current) { todo in
-            TodoListItemView(todo: todo, syncState: todosSyncState.current[todo.id])
-          } //: ForEach
-          .onDelete(perform: viewModel.deleteTodo)
-        } //: List
       }
+      
+      List {
+        ForEach(todos.current) { todo in
+          TodoListItemView(todo: todo, syncState: todosSyncState.current[todo.id])
+        } //: ForEach
+        .onDelete(perform: viewModel.deleteTodo)
+      } //: List
     } //: ZStack
     .navigationTitle(LocalizedStrings.TodoList.Nav.title)
     .navigationBarTitleDisplayMode(.inline)
